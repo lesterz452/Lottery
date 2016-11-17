@@ -1,0 +1,56 @@
+#include <iostream>
+#include <cstdlib>
+#include <time.h>
+using namespace std;
+int main(){
+	//-----------------------開獎號碼--------------------------------- 
+    srand(time(NULL));
+    short sign[43] ,tmp;	//sign -> 標記有無使用 ，tmp -> flag 
+    short RNG[8] ,i=1;	// RNG -> 樂透號碼||1-6普通||7特別 ， i迴圈 
+    for(int i=1;i<=42;i++)sign[i]=i;	//sign給初值以便標記
+    do{
+		tmp=rand()%42+1; 
+		if(sign[tmp]==99)continue;  //有重複直接捨棄 
+		else{
+			RNG[i]=sign[tmp];
+			sign[tmp]=99;    //取完標記 
+			i++;			//未重複就 +1
+		}
+	}while(i<=7);
+	while(cin){
+			cout<<"開獎號碼：";
+			for(i=1;i<=6;i++){	
+				cout<<RNG[i]<<" , ";
+			}	
+			cout<<"特別號："<<RNG[7]<<"\n投注號碼：";
+			//----------------------投注 ＆ 對獎---------------------------
+			short Luky[7] ,j; //投注 6 號碼 
+			short prz=0 ,spl=0; // prz -> 普通號中獎個數，spl -> 特別號 
+			for(i=1;i<=6;i++)cin>>Luky[i]; //投注 
+			for(i=1;i<=6;i++){ //對獎 
+				for(j=1;j<=6;j++){
+					if(Luky[i]==RNG[j]){
+						prz++; //普通對獎 
+						break;
+					}
+				}
+				if(Luky[i]==RNG[7]){
+						spl++;		//特別對獎 
+				}
+			}
+			cout<<"普通號："<<prz<<"\n特別號：" <<spl<<endl;
+			//----------------------對獎---------------------------
+			if(prz==6)cout<<"恭喜！ 獲得頭獎 2.5 億元！\n" ; 
+			else if(prz==5 && spl==1) cout<<"恭喜！ 獲得貳獎 800 萬元！\n" ;
+			else if(prz==5) cout<<"恭喜！ 獲得參獎 30 萬元！\n" ;
+			else if(prz==4 && spl==1) cout<<"恭喜！ 獲得肆獎 2.5 萬元！\n" ;
+			else if(prz==4) cout<<"恭喜！ 獲得伍獎 5 千元！\n" ;
+			else if(prz==3 && spl==1) cout<<"恭喜！ 獲得陸獎 1 千元！\n" ;
+			else if(prz==2 && spl==1) cout<<"恭喜！ 獲得柒獎 4 百元！\n" ;
+			else if(prz==3) cout<<"恭喜！ 獲得普獎 4 百元！\n" ;
+			else cout<<"廢物，沒中！\n"; 
+			cout<<"-----------------------------------------------------------------\n"; 
+	}
+    system("pause");
+    return 0;
+}
